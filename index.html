@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>N5 Kanji Revision</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef1f6;--surf:#fff;--ink:#16213a;--mute:#5d6882;--line:#cfd6e4;--acc:#2b4a99;--onacc:#fff;--ok:#1d7a4d;--okbg:#dff3e8;--bad:#b3352f;--badbg:#fbe3e1;--guide:#c9d2e6;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1526;--surf:#18203a;--ink:#e8ecf7;--mute:#9aa6c4;--line:#2c3758;--acc:#8fa8f0;--onacc:#0f1526;--ok:#6fd6a0;--okbg:#17372a;--bad:#ff8f87;--badbg:#42201f;--guide:#2c3758}}
+:root[data-theme="dark"]{--bg:#0f1526;--surf:#18203a;--ink:#e8ecf7;--mute:#9aa6c4;--line:#2c3758;--acc:#8fa8f0;--onacc:#0f1526;--ok:#6fd6a0;--okbg:#17372a;--bad:#ff8f87;--badbg:#42201f;--guide:#2c3758}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Zen Kaku Gothic New",system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.5}
+main{max-width:640px;margin:0 auto;padding:20px 16px 48px}
+h1{font-family:"Shippori Mincho","Hiragino Mincho ProN",serif;font-size:1.7rem;margin:0 0 4px}
+h2{font-size:1.05rem;margin:22px 0 8px}
+p.sub{color:var(--mute);margin:0 0 8px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--line);background:var(--surf);color:var(--ink);padding:10px 14px}
+button:focus-visible,input:focus-visible+label{outline:3px solid var(--acc);outline-offset:2px}
+button.pri{background:var(--acc);color:var(--onacc);border-color:var(--acc);font-weight:700}
+button.pri:disabled{opacity:.4;cursor:not-allowed}
+button.sm{padding:6px 10px;font-size:.9rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.chk input{position:absolute;opacity:0;pointer-events:none}
+.chk label{display:block;border:1px solid var(--line);background:var(--surf);border-radius:8px;padding:10px 12px;cursor:pointer}
+.chk label small{display:block;color:var(--mute)}
+.chk input:checked+label{border-color:var(--acc);box-shadow:inset 0 0 0 1px var(--acc);background:color-mix(in srgb,var(--acc) 10%,var(--surf))}
+.opts{display:flex;flex-direction:column;gap:8px}
+.cnt{display:flex;gap:8px;align-items:center}
+.cnt button{padding:6px 12px}
+.meta{display:flex;justify-content:space-between;color:var(--mute);font-size:.9rem}
+.prog{height:6px;background:var(--line);border-radius:3px;margin:8px 0 16px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--acc);width:0}
+.box{width:min(220px,60vw);aspect-ratio:1;margin:8px auto 4px;border:2px solid var(--ink);display:grid;place-items:center;position:relative;background:var(--surf)}
+.box::before,.box::after{content:"";position:absolute;background:var(--guide)}
+.box::before{left:50%;top:0;bottom:0;width:1px}.box::after{top:50%;left:0;right:0;height:1px}
+.box span{position:relative;z-index:1;font-family:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;font-weight:700;font-size:min(130px,34vw);line-height:1}
+.box.word span{font-size:min(54px,13vw);text-align:center;padding:8px;word-break:break-all}
+.box.word{aspect-ratio:auto;min-height:130px;width:min(420px,100%)}
+.qtxt{text-align:center;color:var(--mute);margin:8px 0 16px}
+.o{text-align:left;font-size:1.15rem;padding:14px 16px;width:100%}
+.o.ok{background:var(--okbg);border-color:var(--ok);color:var(--ok);font-weight:700}
+.o.bad{background:var(--badbg);border-color:var(--bad);color:var(--bad)}
+.fb{margin:14px 0;padding:12px;border-radius:8px;background:var(--surf);border:1px solid var(--line)}
+.fb b.ok{color:var(--ok)}.fb b.bad{color:var(--bad)}
+.score{font-family:"Shippori Mincho",serif;font-size:3rem;font-weight:700;margin:8px 0}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+td,th{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.scroll{overflow-x:auto}
+.hide{display:none}
+@media (prefers-reduced-motion:no-preference){.prog i{transition:width .25s}}
+</style></head><body><main>
+<section id="setup">
+<h1>N5 漢字 revision</h1>
+<p class="sub">Pick chapters and question types. <span id="avail"></span></p>
+<h2>Chapters</h2>
+<div class="bar"><button class="sm" id="all">Select all</button><button class="sm" id="none">Clear</button></div>
+<div class="grid chk" id="chaps"></div>
+<h2>Question types</h2>
+<div class="grid chk" id="types"></div>
+<h2>Number of questions</h2>
+<div class="cnt"><button id="dec" aria-label="Fewer">−</button><b id="n">20</b><button id="inc" aria-label="More">+</button><button class="sm" id="max">All available</button></div>
+<div class="bar" style="margin-top:24px"><button class="pri" id="start" disabled>Start quiz</button></div>
+</section>
+<section id="quiz" class="hide">
+<div class="meta"><span id="qn"></span><span id="sc"></span></div>
+<div class="prog"><i id="pb"></i></div>
+<div class="box" id="box"><span id="big"></span></div>
+<p class="qtxt" id="qtxt"></p>
+<div class="opts" id="opts"></div>
+<div class="fb hide" id="fb" aria-live="polite"></div>
+<div class="bar"><button class="pri hide" id="next">Next</button><button class="sm" id="quit">End quiz</button></div>
+</section>
+<section id="result" class="hide">
+<h1>Results</h1>
+<div class="score" id="rs"></div>
+<p class="sub" id="rt"></p>
+<div class="bar"><button class="pri" id="again">New quiz</button><button id="retry">Retry mistakes</button></div>
+<h2>Mistakes</h2>
+<div class="scroll"><table id="mt"></table></div>
+</section>
+</main>
+<script>
+const DATA=[{"label":"Numbers","items":[{"k":"一","on":"いち","kun":"ひと（つ）","m":"One","v":[["一つ","ひとつ","One (thing)"],["一月","いちがつ","January"],["一日","いちにち・ついたち","One day/ First day of month"],["一年","いちねん","One year"],["一人","ひとり","One person"]]},{"k":"ニ","on":"に","kun":"ふた（つ）","m":"Two","v":[["二つ","ふたつ","Two (things)"],["ニ月","にがつ","February"],["二人","ふたり","Two people"]]},{"k":"三","on":"さん","kun":"み（つ）、みっ（つ）","m":"Three","v":[["三つ","みっつ","Three"],["三月","さんがつ","March"]]},{"k":"四","on":"し","kun":"よ（つ）、よっ（つ）、よん","m":"Four","v":[["四つ","よっつ","Four"],["四月","しがつ","April"]]},{"k":"五","on":"ご","kun":"いつ（つ）","m":"Five","v":[["五つ","いつつ","Five"],["五月","ごがつ","May"]]},{"k":"六","on":"ろく","kun":"む（つ）、むいむっ（つ）","m":"Six","v":[["六つ","むっつ","Six"],["六月","ろくがつ","June"],["六日","むいか","6th day of the month"]]},{"k":"七","on":"しち","kun":"なな（つ）、なの（か）","m":"Seven","v":[["七つ","ななつ","Seven"],["七月","しちがつ","July"],["七日","なのか","7th day of the month"]]},{"k":"八","on":"はち","kun":"やっ（つ）、よう（か）","m":"Eight","v":[["八つ","やっつ","Eight"],["八月","はちがつ","August"],["八日","ようか","8th day of the month"]]},{"k":"九","on":"きゅう、く","kun":"ここの（つ）、ここの（か）","m":"Nine","v":[["九つ","ここのつ","Nine"],["九月","くがつ","September"],["九日","ここのか","9th day of the month"]]},{"k":"十","on":"じゅう、じっ、じゅっ","kun":"とお","m":"Ten","v":[["十","とお","Ten"],["十月","じゅうがつ","October"],["十日","とおか","10th day of the month"]]}]},{"label":"Lesson 1–2","items":[{"k":"人","on":"にん、じん","kun":"ひと","m":"Person","v":[["アメリカ人","アメリカじん","American"],["あの人はだれですか。","あのひとはだれですか。",""]]},{"k":"名","on":"めい、みょうな","kun":"","m":"Name,Famous","v":[["名前","なまえ","Name"]]},{"k":"方","on":"ほう","kun":"かた","m":"Person, Direction","v":[["あの","かたはミラーさんです。","That person"]]},{"k":"本","on":"ほん","kun":"もと","m":"Origin,Book","v":[["カメラの本","ほん","Book"]]},{"k":"日","on":"じつ、にち","kun":"ひ、び、か","m":"Sun,Day","v":[["日本","にほん","Japan"]]},{"k":"何","on":"か","kun":"なん、なに","m":"What","v":[["これは何ですか","なんですか","What is this?"]]},{"k":"大","on":"だい、たい","kun":"おお（きい）","m":"Big","v":[["大きい","おおきい","Big"]]},{"k":"学","on":"がく","kun":"まな（ぶ）","m":"Study","v":[["大学","だいがく","University"]]},{"k":"社","on":"しゃ","kun":"やしろ","m":"Company, Office","v":[]},{"k":"員","on":"いんー","kun":"","m":"Employee","v":[["社員","しゃいん","Company employee"]]},{"k":"会","on":"かい、え","kun":"あ（います）","m":"Meet","v":[["会社","かいしゃ","Company,Office"],["会社員","かいしゃいん","Employee"]]},{"k":"先","on":"せん","kun":"さき","m":"Ahead,Previous","v":[]},{"k":"生","on":"せい","kun":"う（まれます）い（きます）、なま","m":"Born","v":[["先生","せんせい","teacher"]]},{"k":"行","on":"こう、ぎょう","kun":"い（きます）おこな（います）","m":"Go,Conduct","v":[["行きます","いきます","Go"],["銀行員","ぎんこういん","Banker"]]},{"k":"来","on":"らい","kun":"き（ます）こ（ない）、く（る）","m":"Come","v":[["アメリカから来ました。","アメリカからきました。",""]]},{"k":"車","on":"しゃ","kun":"くるま","m":"Car","v":[["ミラーさんの車","ミラーさんのくるま",""]]}]},{"label":"Lesson 3–4","items":[{"k":"百","on":"ひゃくー","kun":"","m":"Hundred","v":[["百","ひゃく","One hundred"],["六百","ろっぴゃく","Six hundred"],["三百","さんびゃく","Three hundred"]]},{"k":"千","on":"せん、ぜんち","kun":"","m":"Thousand","v":[["八千","はっせん","Eight thousand"],["三千","さんぜん","Three thousand"]]},{"k":"万","on":"まん","kun":"ー","m":"Ten thousand","v":[["一千万","いっせんまん","ten million"],["七万","ななまん","seventy thousand"]]},{"k":"円","on":"えん","kun":"まる（い）","m":"Yen, Circle","v":[["九万円","きゅうまんえん","ninety thousand yen"]]},{"k":"毎","on":"まい","kun":"ー","m":"Every","v":[["毎日","まいにち","Every day"]]},{"k":"時","on":"じ","kun":"とき","m":"Time","v":[["四時","よじ","4 o’ clock"],["九時","くじ","9 o’ clock"]]},{"k":"分","on":"ふん、ぶん、 わ（けます）、ぷんわ（かります）","kun":"","m":"Minutes, Understand","v":[["九分","きゅうふん","Nine minutes"],["一分","いっぷん","One minute"]]},{"k":"半","on":"はん","kun":"なか（ば）","m":"Half","v":[["四時半","よじはん","four thirty"]]},{"k":"国","on":"こく","kun":"くに","m":"Country","v":[["お国はどちらですか。","おくにはどちらですか。",""]]},{"k":"月","on":"がつ、げつ","kun":"つき","m":"Moon","v":[["月よう日","げつようび","Monday"]]},{"k":"火","on":"かひ","kun":"","m":"Fire","v":[["火よう日","かようび","Tuesday"]]},{"k":"水","on":"すい","kun":"みず","m":"Water","v":[["水よう日","すいようび","Wednesday"]]},{"k":"木","on":"もくき","kun":"","m":"Tree","v":[["木よう日","もくようび","Thursday"]]},{"k":"金","on":"きん","kun":"かね","m":"Gold, Money","v":[["金よう日","きんようび","Friday"]]},{"k":"土","on":"ど","kun":"つち","m":"Soil, Mud","v":[["土よう日","どようび","Saturday"]]},{"k":"書","on":"しょ","kun":"か（きます）","m":"Write","v":[["辞書","じしょ","Dictionary"]]}]},{"label":"Lesson 5–6","items":[{"k":"友","on":"ゆう","kun":"とも","m":"Friend","v":[["友達","ともだち","Friend"]]},{"k":"年","on":"ねん","kun":"とし","m":"Year","v":[["来年","らいねん","Next year"]]},{"k":"今","on":"こん","kun":"いま","m":"Now","v":[["今晩","こんばん","This evening"],["今何時ですか。","いま","なんじですか。"]]},{"k":"週","on":"しゅうー","kun":"","m":"Week","v":[["今週","こんしゅう","This week"]]},{"k":"休","on":"きゅう","kun":"やす（みます）","m":"Rest,Holiday","v":[["おととい休みました。","おとといやすみました。",""]]},{"k":"前","on":"ぜん","kun":"まえ","m":"Before, Infront","v":[["名前","なまえ","Name"]]},{"k":"午","on":"ご","kun":"ー","m":"Noon","v":[["午前","ごぜん","a.m"]]},{"k":"後","on":"ご","kun":"うし（ろ）、あと","m":"Later, Behind","v":[["午後","ごご","afternoon"]]},{"k":"校","on":"こう","kun":"ー","m":"School","v":[["学校","がっこう","School"],["高校","こうこう","High school"]]},{"k":"帰","on":"き","kun":"かえ（ります）","m":"Return","v":[["帰ります","かえります","Return"],["帰国","きこく","Return to one’s country"]]},{"k":"見","on":"けん","kun":"み（ます）、み（えます）、み（せる）","m":"See,Show","v":[["テレビを見ます。","テレビをみます。",""]]},{"k":"聞","on":"ぶん、もん","kun":"き（きます）、き（こえます）","m":"Hear","v":[["CDを聞きます。","CDをききます。",""]]},{"k":"読","on":"どく、どう","kun":"よ（みます）","m":"Read","v":[["本を読みます。","ほんをよみます。",""]]},{"k":"食","on":"しょく","kun":"た（べます）","m":"Eat","v":[["ごはんを食べます。","ごはんをたべます。",""],["食堂","しょくどう","Cafeteria/Mess"]]},{"k":"飲","on":"いん","kun":"の（みます）","m":"Drink","v":[["水を飲みます。","みずをのみます。",""]]},{"k":"買","on":"ばい","kun":"か（います）","m":"Buy","v":[["カメラを買います。","カメラをかいます。",""]]}]},{"label":"Lesson 7–8","items":[{"k":"母","on":"ぼ","kun":"はは","m":"Mother","v":[["お母さん","おかあさん","Mother"],["わたしの母","わたしのはは","My mother"]]},{"k":"父","on":"ふ","kun":"ちち","m":"Father","v":[["お父さん","おとうさん","Father"],["わたしの父","わたしのちち","My father"]]},{"k":"物","on":"ぶつ、もつ","kun":"もの","m":"Thing","v":[["食べ物","たべもの","Food"],["荷物","にもつ","Luggage/ baggage"]]},{"k":"朝","on":"ちょう","kun":"あさ","m":"Morning","v":[["朝ごはんを食べます。","あさごはんをたべます。",""]]},{"k":"昼","on":"ちゅう","kun":"ひる","m":"Noon","v":[["昼休み","ひるやすみ","Lunch break"],["昼食","ちゅうしょく","Lunch"]]},{"k":"夜","on":"や","kun":"よる、よ","m":"Night","v":[["夜、本を読みます。","よる、ほんをよみます。",""]]},{"k":"晩","on":"ばん","kun":"ー","m":"Night","v":[["今晩","こんばん","Tonight"],["晩ご飯","ばんごはん","Dinner"]]},{"k":"町","on":"ちょう","kun":"まち","m":"Town","v":[["大きい町","おおきいまち","big town"]]},{"k":"山","on":"さん、ざん","kun":"やま","m":"Mountain","v":[["富士山","ふじさん","Mount Fuji"],["日本の山","にほんのやま","Japanese mountains"]]},{"k":"白","on":"はく","kun":"しろ（い）","m":"White","v":[["白いかばん","しろいかばん","white bag"]]},{"k":"赤","on":"せき","kun":"あか（い）","m":"Red","v":[["赤いネクタイ","あかいネクタイ",""]]},{"k":"青","on":"せい","kun":"あお（い）","m":"Blue","v":[["青いくつ","あおいくつ","blue shoes"],["青空","あおぞら","blue sky"]]},{"k":"黒","on":"こく","kun":"くろ（い）","m":"Black","v":[["黒い傘","くろいかさ","black umbrella;"]]},{"k":"安","on":"あん","kun":"やす（い）","m":"Cheap","v":[["安い","パソコン","Cheap Laptop"]]},{"k":"高","on":"こう","kun":"たか（い）","m":"Expensive, Tall","v":[]},{"k":"小","on":"しょう","kun":"ちい（さい）、お、こ","m":"Small, Tiny","v":[["小さいラジオ","ちいさいラジオ",""]]}]},{"label":"Lesson 9–10","items":[{"k":"男","on":"だん、なん","kun":"おとこ","m":"Man","v":[["男の人","おとこのひと","Man"],["男の子","おとこのこ","Boy"]]},{"k":"女","on":"じょ","kun":"おんな","m":"Woman","v":[["女の子","おんなのこ","Girl"],["彼女","かのじょ","She, girlfriend"]]},{"k":"上","on":"じょう","kun":"うえ","m":"Above, Up","v":[["いすの上","いすのうえ",""]]},{"k":"下","on":"か、げ","kun":"した","m":"Under, Down","v":[["テーブルの下","テーブルのした",""]]},{"k":"左","on":"さ","kun":"ひだり","m":"Left","v":[["左手","ひだりて","Left hand"]]},{"k":"右","on":"ゆう、う","kun":"みぎ","m":"Right","v":[["右手","みぎりて","Right hand"]]},{"k":"中","on":"ちゅう、じゅう","kun":"なか","m":"Middle, Inside","v":[["はこの中","はこのなか",""],["中国","ちゅうごく","China"]]},{"k":"門","on":"もん","kun":"かど","m":"Gate","v":[["門の前","もんのまえ","In front of gate"]]},{"k":"間","on":"かん、けん","kun":"あいだ、ま","m":"Between","v":[["はなやと本屋のあいだ","はなやとほんやのあいだ",""]]},{"k":"近","on":"きん","kun":"ちか（い）","m":"Near","v":[["ポストの近く","ポストのちかく","Nearby"],["近所","きんじょ","Neighborhood"]]},{"k":"魚","on":"ぎょ","kun":"さかな、うお","m":"Fish","v":[["魚がすきです。","さかながすきです。",""]]},{"k":"手","on":"しゅ","kun":"て","m":"Hand","v":[["手帳","てちょう","Planner"],["上手","じょうず","Skilled"],["手紙","てがみ","Letter"],["歌手","かしゅ","Singer"],["下手","へた","Bad at~"]]},{"k":"犬","on":"けん","kun":"いぬ","m":"Dog","v":[["犬がいます。","いぬがいます。",""],["子犬","こいぬ","Puppy"]]},{"k":"早","on":"そう","kun":"はや（い）","m":"Early","v":[["早く帰ります。","はやくかえります。",""]]},{"k":"計","on":"けい","kun":"はか（る）","m":"Measure,Weigh","v":[["時計","とけい","Clock"]]},{"k":"外","on":"がい","kun":"そと","m":"Outside","v":[["門の外","もんのそと",""],["外国","がいこく","Foriegn country"],["外国人","がいこくじん","Foriegner"]]}]},{"label":"Lesson 11–12","items":[{"k":"兄","on":"けい、きょう","kun":"あに","m":"Elder brother","v":[["兄","あに","My elder brother"],["お兄さん","おにいさん","Someones’s elder brother"]]},{"k":"弟","on":"てい、だい","kun":"おとうと","m":"Younger brother","v":[["弟は大学生です。","おとうとはだいがくせいです。",""],["兄弟","きょうだい","Siblings"]]},{"k":"姉","on":"し","kun":"あね","m":"Elder sister","v":[["姉は銀行員です。","あねはぎんこういんです。",""],["お姉さん","おねえさん","Someone’s elder sister"]]},{"k":"妹","on":"まい","kun":"いもうと","m":"Younger sister","v":[["妹は十八歳です。","いもうとはじゅうはっさいです。",""],["姉妹","しまい","Sisters"]]},{"k":"家","on":"か、け","kun":"いえ、や","m":"House","v":[["家賃","やちん","House rent"],["家具","かぐ","Furniture"]]},{"k":"族","on":"ぞくー","kun":"","m":"Family","v":[["家族","かぞく","Family"],["水族館","すいぞくかん","Aquarium"]]},{"k":"春","on":"しゅん","kun":"はる","m":"Spring","v":[["春の花","はるのはな","Spring flowers"]]},{"k":"夏","on":"か、げ","kun":"なつ","m":"Summer","v":[["夏休み","なつやすみ","Summer holidays"]]},{"k":"秋","on":"しゅう","kun":"あき","m":"Autumn","v":[["秋がすきです。","あきがすきです。",""]]},{"k":"冬","on":"とう","kun":"ふゆ","m":"Winter","v":[["冬の朝","ふゆのあさ","Winter morning"]]},{"k":"気","on":"き、けー","kun":"","m":"Air, Spirit","v":[["天気","てんき","Weather"]]},{"k":"天","on":"てん","kun":"あま","m":"Heavens","v":[["天気","てんき","Weather"]]},{"k":"多","on":"た","kun":"おお（い）","m":"Many","v":[["人が多いです。","ひとがおおいです。",""]]},{"k":"少し","on":"しょう","kun":"すこ（し）、すく（ない）","m":"Few, Little","v":[["日本語が少しわかります。","にほんごがすこしわかります。",""],["人が少ないです。","ひとがすくないです。",""]]},{"k":"元","on":"げん、がん","kun":"もと","m":"Origin","v":[["お元気ですか。","おげんきですか。",""]]},{"k":"歩","on":"ほ","kun":"ある（きます）","m":"Walk","v":[["歩いて行きます","あるいていきます。",""]]}]},{"label":"Lesson 13–14","items":[{"k":"入","on":"にゅう","kun":"はい（ります）、い(れます）","m":"Enter, Insert","v":[["入ってください","はいってください。",""]]},{"k":"出","on":"しゅつ","kun":"で（ます）、だ（します）","m":"To go out","v":[["出てください。","でてください。",""],["外出","がいしゅつ","Outing/ going out"]]},{"k":"広","on":"こう","kun":"ひろ（い）","m":"Spacious","v":[["広い庭がほしいです。","ひろいにわがほしいです。",""]]},{"k":"止","on":"し","kun":"と（めます）、と（まります）","m":"Stop,Halt","v":[["タクシーを止めます。","タクシーをとめます。",""]]},{"k":"雨","on":"う","kun":"あめ、あま","m":"Rain","v":[["雨がふります。","あめがふります。",""],["梅雨","つゆ","Rainy season"]]},{"k":"開","on":"かい","kun":"あ（けます）、ひら（きます））","m":"Open","v":[["ドアを開けます。","ドアをあけます。",""]]},{"k":"海","on":"かい","kun":"うみ","m":"Sea","v":[["海へ行きます。","うみへいきます。",""],["北海道","ほっかいどう","Hokkaido"]]},{"k":"川","on":"せん","kun":"かわ","m":"River","v":[["川でおよぎます。","かわでおよぎます。",""]]},{"k":"世","on":"せい、せよ","kun":"","m":"Generation","v":[]},{"k":"界","on":"かいー","kun":"","m":"World","v":[["世界","せかい","World"]]},{"k":"画","on":"が、かくー","kun":"","m":"Picture","v":[["画家","がか","Painter"]]},{"k":"映","on":"えい","kun":"うつ（します）、うつ（ります）","m":"Reflection","v":[["映画","えいが","Movie"]]},{"k":"花","on":"か","kun":"はな","m":"Flower","v":[["生け花","いけばな","Flower arrangement"],["花見をします。","はなみをします。","Cherry blossom view"]]},{"k":"茶","on":"ちゃ、さー","kun":"","m":"Tea","v":[["喫茶店","きっさてん","Coffee shop"],["お茶を飲みます。","おちゃをのみます。",""],["紅茶","こうちゃ","Black tea"]]},{"k":"語","on":"ご","kun":"かた（ります）","m":"Language","v":[["日本語","にほんご","Japanese"]]},{"k":"英","on":"えいー","kun":"","m":"English","v":[["英語","えいご","English"],["英国","えいこく","England"]]}]},{"label":"Lesson 15–16","items":[{"k":"体","on":"たい","kun":"からだ","m":"Body","v":[["体重","たいじゅう","Body weight"]]},{"k":"足","on":"そくあし、た（ります）、た（します）","kun":"","m":"Leg, Sufficient","v":[["手と足","てとあし","Hand and leg"]]},{"k":"口","on":"こう","kun":"くち","m":"Mouth Body","v":[["口の中","くちのなか","Inside the mouth"],["出口","でぐち","Exit"],["入口","いりぐち","Entrance"]]},{"k":"顔","on":"がん","kun":"かお","m":"Face","v":[["顔をかいてください。","かおをかいてください。",""]]},{"k":"耳","on":"じ","kun":"みみ","m":"Ear","v":[["耳が小さいです。","みみがちいさいです。",""],["左耳","ひだりみみ","Left ear"]]},{"k":"目","on":"もくめ","kun":"","m":"Eyes","v":[["青い目","あおいめ","blue"]]},{"k":"立","on":"りつ","kun":"た（ちます）","m":"Stand","v":[["立ってください。","たってください。",""]]},{"k":"知","on":"ち","kun":"し（ります）","m":"Know","v":[["あの人の名前を知りません。","あのひとのなまえをしりません。",""],["知人","ちじん","Friend/ aquaintance"]]},{"k":"住","on":"じゅう","kun":"す（みます）","m":"Reside","v":[["日本に住んでいます。","にほんにすんでいます。",""],["住所","じゅうしょ","Address"]]},{"k":"思","on":"し","kun":"おも（います）","m":"Think","v":[]},{"k":"使","on":"し","kun":"つか（います）","m":"Use","v":[["パソコンを使います。","パソコンをつかいます。",""],["使用","しよう","Use/ application"]]},{"k":"作","on":"さく、さ","kun":"つく（ります）","m":"Prepare, Make","v":[["作文","さくぶん","Essay/ composition"]]},{"k":"品","on":"ひん","kun":"しな","m":"Goods, Products","v":[["品物","しなもの","Goods"],["製品","せいひん","Manufactured products"]]},{"k":"長","on":"ちょう","kun":"なが（い）","m":"Long","v":[["足が長いです。","あしがながいです。",""],["校長","こうちょう","School principal"],["店長","てんちょう","Shop manager"]]},{"k":"明","on":"めい、みょう","kun":"あか（るい）","m":"Bright","v":[["明日","あした","Tomorrow"],["説明","せつめい","Explaination"]]},{"k":"肉","on":"にくー","kun":"","m":"Meat","v":[["肉が好きです。","にくがすきです。",""],["牛肉","ぎゅうにく","Beef"]]}]},{"label":"Lesson 17–18","items":[{"k":"問","on":"もん","kun":"と（います）、と（い）","m":"Question","v":[["問題","もんだい",""]]},{"k":"答","on":"とう","kun":"こた（えます）、こた（え）","m":"Answer","v":[["答えを書きます。","こたえをかきます。",""]]},{"k":"心","on":"しん","kun":"こころ","m":"Heart,Spirit","v":[["安心","あんしん","Relief"]]},{"k":"配","on":"はい","kun":"くば（ります）","m":"Distribute","v":[["心配します。","しんぱいします。","Worry/ anxious"]]},{"k":"子","on":"し、すこ","kun":"","m":"Child","v":[["男の子","おとこのこ","Boy"],["女の子","おんなのこ","Girl"],["子ども","こども",""]]},{"k":"売","on":"ばい","kun":"う（ります）、う（れます）","m":"Sell","v":[["チケットを売ります。","チケットをうります。",""],["売店","ばいてん","Shop"],["売り場","うりば","Sales counter"]]},{"k":"場","on":"しょうば","kun":"","m":"Location,Place","v":[["売り場","うりば","Sales counter"],["会場","かいじょう","Meeting hall"],["市場","いちば","Market place"]]},{"k":"字","on":"じー","kun":"","m":"Letter","v":[["数字","すうじ","Numeric character"]]},{"k":"漢","on":"かんー","kun":"","m":"Chinese people","v":[["漢字","かんじ","Chinese character"]]},{"k":"料","on":"りょうー","kun":"","m":"Materials, Fee","v":[["無料","むりょう","Free of charge"],["給料","きゅうりょう","Salary"]]},{"k":"理","on":"りー","kun":"","m":"Reason,Logic","v":[["料理","りょうり","Cuisine/ dishes"],["理由","りゆう","Reason"]]},{"k":"主","on":"ぬし、おも","kun":"しゅ","m":"Master, Head","v":[["主人","しゅじん","Husband"],["持ち主","もちぬし","Owner/ propieter"]]},{"k":"着","on":"ちゃく","kun":"き（ます）、つ（きます）","m":"Wear, Arrive","v":[["上着","うわぎ",""],["下着","したぎ",""],["着物","きもの","Kimono"]]},{"k":"新","on":"しん","kun":"あたら（しい）、あら（た）、にい","m":"New","v":[["新しい","あたらしい","new"],["新聞","しんぶん","Newspaper"],["新年","しんねん","New year"]]},{"k":"古","on":"こ","kun":"ふる（い）","m":"Old","v":[["古い町","ふるいまち","old town"],["中古","ちゅうこ","Used/ secondhand"]]},{"k":"持","on":"じ","kun":"も（ちます）","m":"Carry, Hold","v":[["持って行きます。","もっていきます。",""],["持ち物","もちもの","One’s property"]]}]},{"label":"Lesson 19–20","items":[{"k":"電","on":"でん","kun":"","m":"Electricity","v":[["電車","でんしゃ","train"],["電気","でんき","electricity"]]},{"k":"話","on":"わ","kun":"はなしはな（します）","m":"Talk","v":[["電話","でんわ","telephone"],["話す","はなす","speak"]]},{"k":"音","on":"おんおと","kun":"","m":"Sound","v":[["音","おと","Sound"]]},{"k":"楽","on":"がく","kun":"たの（しい）","m":"Enjoyable, Delightful","v":[["音楽","おんがく","music"]]},{"k":"歌","on":"かうた","kun":"","m":"Song","v":[["歌を歌う。","うたをうたう。",""]]},{"k":"度","on":"どたび","kun":"","m":"Frequency, Degree","v":[["一度","いちど","once"]]},{"k":"教","on":"きょう","kun":"おし（える）","m":"Teach","v":[["日本語を教える。","にほんごをおしえる。",""],["教師","きょうし","teacher"]]},{"k":"習","on":"しゅう","kun":"なら（う）","m":"Learn","v":[["英語を習う。","えいごをならう。",""],["練習","れんしゅう","practice"]]},{"k":"貸","on":"たい","kun":"か（す）","m":"To lend","v":[["本を貸します。","ほんをかします。",""]]},{"k":"借","on":"しゃく","kun":"か（りる）","m":"To borrow","v":[["お金を借りる。","おかねをかりる。",""]]},{"k":"送","on":"そう","kun":"おく（る）","m":"To send","v":[["レポートを送る。","レポートをおくる。",""]]},{"k":"強","on":"きょう","kun":"つよ（い）","m":"Strong, Powerful","v":[["強い体。","つよいからだ。",""]]},{"k":"勉","on":"べん","kun":"つとむ","m":"Encourage, Make effort","v":[["勉強する。","べんきょうする。study。",""]]},{"k":"旅","on":"りょたび","kun":"","m":"Travel/ Trip","v":[["旅行する。","りょこうする。travel。",""]]},{"k":"室","on":"しつむろ","kun":"","m":"Room","v":[["教室","きょうしつ","class room"]]},{"k":"登","on":"と","kun":"のぼ（る）","m":"To climb","v":[["山に登る。","やまにのぼる。",""]]}]},{"label":"Lesson 21–22","items":[{"k":"不","on":"ふ","kun":"","m":"Negative/ Non-","v":[["不便","ふべん","inconvenience"]]},{"k":"始","on":"し","kun":"はじ（める）","m":"To start/begin","v":[["会議を始めます。","かいぎをはじめます。",""]]},{"k":"言","on":"げん","kun":"い（う）","m":"To say","v":[["答えを言います。","こたえをいいます。",""]]},{"k":"意","on":"い","kun":"","m":"Idea, mind","v":[["意見","opinion",""]]},{"k":"事","on":"じ","kun":"こと","m":"Thing/ matter","v":[["事務所","じむしょ","office"]]},{"k":"仕","on":"し","kun":"つか（える）","m":"To serve, To work for","v":[["仕事","しごと","work"]]},{"k":"病","on":"びょう","kun":"や（む）","m":"To fall sick","v":[["病気","びょうき","illness"]]},{"k":"院","on":"いん","kun":"","m":"Institution","v":[["病院","びょういん","hospital"]]},{"k":"医","on":"い","kun":"","m":"Medicine","v":[["医院","いいん",""]]},{"k":"者","on":"しゃもの","kun":"","m":"Person, Someone","v":[["医者","いしゃ","doctor"]]},{"k":"堂","on":"どう","kun":"","m":"Hall, Public chamber","v":[["食堂","しょくどう","dining hall"]]},{"k":"屋","on":"おくや","kun":"","m":"Shop/ Store","v":[["本屋","ほんや","bookstore"],["部屋","へや","room"]]},{"k":"用","on":"よう","kun":"もち（いる）","m":"Business, Utilize,Service","v":[["用事","ようじ","business"]]},{"k":"有","on":"ゆう","kun":"あ（る）","m":"To exist/ live","v":[["有名な大学","ゆうめいなだいがく","Famous college"]]},{"k":"店","on":"てんみせ","kun":"","m":"Shop/ Store","v":[["きれいな店","きれいなみせ","Beautiful shop"]]},{"k":"民","on":"みんたみ","kun":"","m":"Citizens, People","v":[["国民","こくみん","nation"]]}]},{"label":"Lesson 23–24","items":[{"k":"正","on":"せいしょう","kun":"ただ（しい）","m":"Correct","v":[["お正月","おしょうがつ","New"]]},{"k":"銀","on":"ぎん","kun":"しろがね","m":"Gold","v":[["銀行","ぎんこう","bank"]]},{"k":"図","on":"とず","kun":"はか（る）","m":"Drawing, Map","v":[["地図","ちず","map"]]},{"k":"館","on":"かん","kun":"","m":"Building, Mansion","v":[["図書館","としょかん","library"]]},{"k":"道","on":"どうみち","kun":"","m":"Road","v":[["道をわたります。","みちをわたります。",""]]},{"k":"自","on":"じ","kun":"みずから","m":"Oneself","v":[]},{"k":"動","on":"どう","kun":"うご（く）","m":"To move/shift","v":[["動物","どうぶつ","animal"],["自動車","じどうしゃ","car"],["時計が動きます。","とけいがうごきます。",""]]},{"k":"建","on":"けん","kun":"たて（る）","m":"To build/ construct","v":[["建物","たてもの","building"]]},{"k":"特","on":"とく","kun":"","m":"Special","v":[["特に","とくに","specifically/ specially"]]},{"k":"終","on":"しゅう","kun":"お（わる）","m":"Over/End","v":[["五時に終わります。","ごじにおわります。",""]]},{"k":"駅","on":"えき","kun":"","m":"Railway Station","v":[["駅へ行きます。","えきへいきます。",""]]},{"k":"写","on":"しゃ","kun":"うつ（す）","m":"To imitate/copy","v":[]},{"k":"真","on":"しん","kun":"","m":"Reality/ Truth","v":[["写真","しゃしん","photograph"]]},{"k":"牛","on":"ぎゅううし","kun":"","m":"Cow","v":[["牛乳","ぎゅうにゅう","milk"]]},{"k":"林","on":"りん","kun":"はやし","m":"Woods/ Grove","v":[]},{"k":"森","on":"しんもり","kun":"","m":"Forest","v":[]}]},{"label":"Lesson 25","items":[{"k":"田","on":"でんた","kun":"","m":"Rice field/ paddy","v":[["田中さん","たなかさん","Mr．Tanaka"],["田舎","いなか","country"]]},{"k":"考","on":"こう","kun":"かんが（える）","m":"To think/ ponder","v":[["答えを考えます。","こたえをかんがえます。",""]]},{"k":"親","on":"しんおや","kun":"","m":"Parent","v":[["両親","りょうしん","parents"]]},{"k":"切","on":"せつ","kun":"き（る）","m":"Cut","v":[["切手","きって","stamp"],["紙を切ります。","かみをきります。",""]]},{"k":"試","on":"し","kun":"ため（す）","m":"Test/ Try","v":[]},{"k":"験","on":"けん","kun":"","m":"Test/ Verification","v":[["試験","しけん","examination"]]},{"k":"部","on":"ぶ","kun":"","m":"Department/ Section","v":[["部長","ぶちょう","director of a department"],["部屋","へや","room"]]},{"k":"文","on":"ぶんふみもん","kun":"","m":"Literature/ Sentence","v":[["文型","ぶんけい","sentence pattern"]]},{"k":"歳","on":"さい","kun":"","m":"Age","v":[["十九歳","じゅうじゅうさい","19 years old"],["二十歳","はたち","20 years old"]]},{"k":"留","on":"りゅうる","kun":"とど（まる）と（める）","m":"Stop/ Halt","v":[["留学生","りゅうがくせい","foregin students"],["留学します。"," りゅうがくします。Study abroad。",""]]},{"k":"議","on":"ぎ","kun":"","m":"Consultation/ Consideration","v":[["会議室","かいぎしつ","meeting room"]]},{"k":"散","on":"さん","kun":"ち（る）","m":"To spread/ Run","v":[["散歩します。","さんぽします。Take a walk。",""]]},{"k":"浴","on":"よく","kun":"あ（びる）","m":"To take bath","v":[["シャワーを浴びる。","シャワーをあびる。",""]]},{"k":"降","on":"こう","kun":"お（りる）ふ（る）","m":"To get off/ To fall","v":[["雨が降ります。","あめがふります。rain。",""]]},{"k":"欲","on":"よく","kun":"ほ（しい）","m":"Want, Need","v":[["車が欲しいです。","くるまがほしいです。",""]]},{"k":"億","on":"おく","kun":"","m":"100 Million","v":[]}]}];
+const TYPES=[{id:"meaning",t:"Kanji → meaning",d:"Pick the English meaning"},{id:"on",t:"Kanji → onyomi",d:"音読み"},{id:"kun",t:"Kanji → kunyomi",d:"訓読み"},{id:"vocab",t:"Word → reading",d:"Pick the kana reading"}];
+const $=id=>document.getElementById(id);
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+let N=20,pool=[],qs=[],qi=0,score=0,wrong=[],locked=false;
+DATA.forEach((c,i)=>{$("chaps").insertAdjacentHTML("beforeend",`<div><input type="checkbox" id="c${i}" value="${i}"><label for="c${i}">${c.label}<small>${c.items.length} kanji</small></label></div>`)});
+TYPES.forEach(t=>{$("types").insertAdjacentHTML("beforeend",`<div><input type="checkbox" id="t_${t.id}" value="${t.id}" checked><label for="t_${t.id}">${t.t}<small>${t.d}</small></label></div>`)});
+const selC=()=>[...document.querySelectorAll("#chaps input:checked")].map(x=>+x.value);
+const selT=()=>[...document.querySelectorAll("#types input:checked")].map(x=>x.value);
+function items(ci){return ci.flatMap(i=>DATA[i].items)}
+function build(ci,ts){
+  const it=items(ci),out=[];
+  it.forEach(k=>{
+    if(ts.includes("meaning")&&k.m)out.push({t:"meaning",k:k.k,a:k.m});
+    if(ts.includes("on")&&k.on)out.push({t:"on",k:k.k,a:k.on});
+    if(ts.includes("kun")&&k.kun)out.push({t:"kun",k:k.k,a:k.kun});
+    if(ts.includes("vocab"))k.v.forEach(v=>out.push({t:"vocab",k:v[0],a:v[1],m:v[2]||""}));
+  });return out;
+}
+function refresh(){
+  const c=selC(),t=selT();pool=build(c,t);
+  $("avail").textContent=pool.length?`${pool.length} questions available.`:"";
+  $("start").disabled=!pool.length;
+  if(N>pool.length&&pool.length)N=pool.length;$("n").textContent=N;
+}
+document.querySelectorAll("#chaps input,#types input").forEach(x=>x.onchange=refresh);
+$("all").onclick=()=>{document.querySelectorAll("#chaps input").forEach(x=>x.checked=true);refresh()};
+$("none").onclick=()=>{document.querySelectorAll("#chaps input").forEach(x=>x.checked=false);refresh()};
+$("dec").onclick=()=>{N=Math.max(1,N-5);$("n").textContent=N};
+$("inc").onclick=()=>{N=Math.min(pool.length||N,N+5);$("n").textContent=N};
+$("max").onclick=()=>{if(pool.length){N=pool.length;$("n").textContent=N}};
+function show(id){["setup","quiz","result"].forEach(s=>$(s).classList.toggle("hide",s!==id));window.scrollTo(0,0)}
+function begin(list){qs=shuf(list).slice(0,N);qi=0;score=0;wrong=[];show("quiz");ask()}
+$("start").onclick=()=>{refresh();if(pool.length)begin(pool)};
+// distractors come from the chapters being quizzed, topping up from all chapters if needed
+function distract(q,n){
+  const all=[...new Set(build(selC(),[q.t]).filter(x=>x.t===q.t).map(x=>x.a))].filter(a=>a!==q.a);
+  let d=shuf(all).slice(0,n);
+  if(d.length<n){const ext=[...new Set(build(DATA.map((_,i)=>i),[q.t]).map(x=>x.a))].filter(a=>a!==q.a&&!d.includes(a));d=d.concat(shuf(ext).slice(0,n-d.length))}
+  return d;
+}
+function ask(){
+  const q=qs[qi];locked=false;
+  $("qn").textContent=`Question ${qi+1} of ${qs.length}`;$("sc").textContent=`Score ${score}`;
+  $("pb").style.width=(qi/qs.length*100)+"%";
+  $("box").classList.toggle("word",q.t==="vocab");$("big").textContent=q.k;
+  $("qtxt").textContent={meaning:"What does this kanji mean?",on:"Choose the onyomi (音読み)",kun:"Choose the kunyomi (訓読み)",vocab:"Choose the correct reading"}[q.t];
+  const o=shuf([q.a,...distract(q,3)]);
+  $("opts").innerHTML="";
+  o.forEach(t=>{const b=document.createElement("button");b.className="o";b.textContent=t;b.onclick=()=>pick(b,t);$("opts").appendChild(b)});
+  $("fb").classList.add("hide");$("next").classList.add("hide");
+}
+function pick(b,t){
+  if(locked)return;locked=true;const q=qs[qi],ok=t===q.a;
+  if(ok)score++;else wrong.push(q);
+  [...$("opts").children].forEach(x=>{if(x.textContent===q.a)x.classList.add("ok");x.disabled=true});
+  if(!ok)b.classList.add("bad");
+  const extra=q.t==="vocab"?(q.m?` — ${q.m}`:""):"";
+  $("fb").innerHTML=ok?`<b class="ok">Correct.</b> ${q.k} = ${q.a}${extra}`:`<b class="bad">Not quite.</b> ${q.k} = ${q.a}${extra}`;
+  $("fb").classList.remove("hide");$("sc").textContent=`Score ${score}`;
+  $("next").textContent=qi===qs.length-1?"See results":"Next";$("next").classList.remove("hide");$("next").focus();
+}
+$("next").onclick=()=>{if(qi<qs.length-1){qi++;ask()}else finish()};
+$("quit").onclick=()=>{if(locked||qi>0){qs=qs.slice(0,qi+(locked?1:0));finish()}else show("setup")};
+function finish(){
+  const n=qs.length||1;$("rs").textContent=`${score} / ${qs.length}`;
+  $("rt").textContent=`${Math.round(score/n*100)}% correct`;
+  const L={meaning:"Meaning",on:"Onyomi",kun:"Kunyomi",vocab:"Reading"};
+  $("mt").innerHTML=wrong.length?`<tr><th>Item</th><th>Type</th><th>Answer</th></tr>`+wrong.map(q=>`<tr><td>${q.k}</td><td>${L[q.t]}</td><td>${q.a}${q.t==="vocab"&&q.m?"<br><small>"+q.m+"</small>":""}</td></tr>`).join(""):`<tr><td>No mistakes. 全部正解!</td></tr>`;
+  $("retry").classList.toggle("hide",!wrong.length);
+  show("result");
+}
+$("again").onclick=()=>{show("setup");refresh()};
+$("retry").onclick=()=>{const w=wrong.slice();N=w.length;begin(w)};
+refresh();
+</script></body></html>
